@@ -24,7 +24,7 @@ import org.fourthline.cling.transport.spi.DatagramIOConfiguration;
  */
 public class DatagramIOConfigurationImpl implements DatagramIOConfiguration {
 
-    private int timeToLive = 4;
+    private int timeToLive = 1;
     private int maxDatagramBytes = 640;
 
     /**

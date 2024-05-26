@@ -23,6 +23,7 @@ import org.fourthline.cling.transport.spi.NetworkAddressFactory;
 import org.fourthline.cling.transport.spi.NoNetworkException;
 import org.seamless.util.Iterators;
 
+import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
@@ -62,6 +63,7 @@ public class NetworkAddressFactoryImpl implements NetworkAddressFactory {
     final protected List<InetAddress> bindAddresses = new ArrayList<>();
 
     protected int streamListenPort;
+    private final boolean ipv6;
 
     /**
      * Defaults to an ephemeral port.
@@ -71,8 +73,13 @@ public class NetworkAddressFactoryImpl implements NetworkAddressFactory {
     }
 
     public NetworkAddressFactoryImpl(int streamListenPort) throws InitializationException {
+        this(streamListenPort, false);
+    }
 
-        System.setProperty("java.net.preferIPv4Stack", "true");
+    public NetworkAddressFactoryImpl(int streamListenPort, boolean ipv6) throws InitializationException {
+        this.ipv6 = ipv6;
+
+        if (!ipv6) System.setProperty("java.net.preferIPv4Stack", "true");
 
         String useInterfacesString = System.getProperty(SYSTEM_PROPERTY_NET_IFACES);
         if (useInterfacesString != null) {
@@ -453,7 +460,10 @@ public class NetworkAddressFactoryImpl implements NetworkAddressFactory {
      * @return True if the given address matches all validation criteria.
      */
     protected boolean isUsableAddress(NetworkInterface networkInterface, InetAddress address) {
-        if (!(address instanceof Inet4Address)) {
+        if (ipv6 && (address instanceof Inet4Address)) {
+            Log.v(getClass().getName(), "Skipping unsupported IPv4 address: " + address);
+            return false;
+        } else if (!ipv6 && !(address instanceof Inet4Address)) {
             Log.v(getClass().getName(), "Skipping unsupported non-IPv4 address: " + address);
             return false;
         }
@@ -461,6 +471,18 @@ public class NetworkAddressFactoryImpl implements NetworkAddressFactory {
         if (address.isLoopbackAddress()) {
             Log.v(getClass().getName(), "Skipping loopback address: " + address);
             return false;
+        }
+
+        if (ipv6) {
+            try {
+                //todo maybe expand check to ethernet etc.
+                if (address.isLoopbackAddress() && networkInterface.supportsMulticast() && networkInterface.isUp()
+                        && networkInterface.getDisplayName().contains("wlan"))
+                    return true;
+            } catch (IOException e) {
+                Log.e(getClass().getName(), "Couldn't determine multicast support for interface " + networkInterface.getDisplayName());
+                return false;
+            }
         }
 
         if (useAddresses.size() > 0 && !useAddresses.contains(address.getHostAddress())) {

@@ -81,6 +81,8 @@ public class RouterImpl implements Router {
     protected NetworkAddressFactory networkAddressFactory;
     protected StreamClient streamClient;
 
+    protected boolean ipv6 = false;
+
     protected RouterImpl() {
     }
 
@@ -93,6 +95,19 @@ public class RouterImpl implements Router {
         Log.i(getClass().getName(), "Creating Router: " + getClass().getName());
         this.configuration = configuration;
         this.protocolFactory = protocolFactory;
+    }
+
+    /**
+     * @param configuration   The configuration used by this router.
+     * @param protocolFactory The protocol factory used by this router.
+     * @param ipv6            whether to use ipv6 only mode
+     */
+    @Inject
+    public RouterImpl(UpnpServiceConfiguration configuration, ProtocolFactory protocolFactory, boolean ipv6) {
+        Log.i(getClass().getName(), "Creating Router: " + getClass().getName());
+        this.configuration = configuration;
+        this.protocolFactory = protocolFactory;
+        this.ipv6 = ipv6;
     }
 
     public boolean enable(@Observes @Default EnableRouter event) throws RouterException {
@@ -419,9 +434,11 @@ public class RouterImpl implements Router {
         while (addresses.hasNext()) {
             InetAddress address = addresses.next();
 
-            if (!(address instanceof Inet4Address)) {
+            if (address instanceof Inet4Address) {
                 continue;
             }
+            if (!address.isLinkLocalAddress()) continue;
+
             // HTTP servers
             StreamServer streamServer = getConfiguration().createStreamServer(protocolFactory, networkAddressFactory);
             if (streamServer == null) {

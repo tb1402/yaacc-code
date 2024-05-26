@@ -71,6 +71,7 @@ public class HostPort {
 
     @Override
     public String toString() {
+        if(host.contains(":")) return "["+host+"]:"+port;
         return host + ":" + port;
     }
 }

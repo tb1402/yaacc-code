@@ -27,8 +27,8 @@ public class YaaccRouter extends RouterImpl {
 
     public YaaccRouter(UpnpServiceConfiguration configuration,
                        ProtocolFactory protocolFactory,
-                       Context context) throws InitializationException {
-        super(configuration, protocolFactory);
+                       Context context, boolean ipv6) throws InitializationException {
+        super(configuration, protocolFactory, ipv6);
         this.context = context;
         this.wifiManager = ((WifiManager) context.getSystemService(Context.WIFI_SERVICE));
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

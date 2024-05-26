@@ -39,14 +39,16 @@ import org.fourthline.cling.transport.spi.StreamServer;
 public class YaaccUpnpServiceConfiguration extends DefaultUpnpServiceConfiguration {
 
     private static final int PORT = 49154;
+    private final boolean ipv6;
 
 
-    public YaaccUpnpServiceConfiguration() {
-        this(PORT);
+    public YaaccUpnpServiceConfiguration(boolean ipv6) {
+        this(PORT, ipv6);
     }
 
-    public YaaccUpnpServiceConfiguration(int streamListenPort) {
+    public YaaccUpnpServiceConfiguration(int streamListenPort, boolean ipv6) {
         super(streamListenPort, false);
+        this.ipv6=ipv6;
 
         // This should be the default on Android 2.1 but it's not set by default
         //FIXME really needed? System.setProperty("org.xml.sax.driver", "org.xmlpull.v1.sax2.Driver");
@@ -54,7 +56,7 @@ public class YaaccUpnpServiceConfiguration extends DefaultUpnpServiceConfigurati
 
     @Override
     protected NetworkAddressFactory createNetworkAddressFactory(int streamListenPort) {
-        return new NetworkAddressFactoryImpl(streamListenPort);
+        return new NetworkAddressFactoryImpl(streamListenPort, ipv6);
     }
 
     @Override

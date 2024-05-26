@@ -23,12 +23,15 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
+import androidx.preference.PreferenceManager;
+
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.UpnpServiceImpl;
 import org.fourthline.cling.protocol.ProtocolFactory;
 import org.fourthline.cling.registry.Registry;
 import org.fourthline.cling.transport.Router;
 
+import de.yaacc.R;
 import de.yaacc.upnp.server.YaaccRouter;
 
 /**
@@ -50,11 +53,15 @@ public class UpnpRegistryService extends Service {
         long start = System.currentTimeMillis();
         super.onCreate();
 
-        upnpService = new UpnpServiceImpl(new YaaccUpnpServiceConfiguration()) {
+        //if true, use ipv6 only
+        boolean ipv6 = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean(
+                getString(R.string.settings_ipv6), false);
+
+        upnpService = new UpnpServiceImpl(new YaaccUpnpServiceConfiguration(ipv6)) {
 
             @Override
             protected Router createRouter(ProtocolFactory protocolFactory, Registry registry) {
-                return new YaaccRouter(getConfiguration(), protocolFactory, UpnpRegistryService.this);
+                return new YaaccRouter(getConfiguration(), protocolFactory, UpnpRegistryService.this, ipv6);
             }
 
             @Override
