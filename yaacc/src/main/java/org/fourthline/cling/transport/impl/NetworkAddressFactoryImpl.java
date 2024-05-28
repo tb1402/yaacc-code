@@ -474,15 +474,10 @@ public class NetworkAddressFactoryImpl implements NetworkAddressFactory {
         }
 
         if (ipv6) {
-            try {
-                //todo maybe expand check to ethernet etc.
-                if (address.isLoopbackAddress() && networkInterface.supportsMulticast() && networkInterface.isUp()
-                        && networkInterface.getDisplayName().contains("wlan"))
-                    return true;
-            } catch (IOException e) {
-                Log.e(getClass().getName(), "Couldn't determine multicast support for interface " + networkInterface.getDisplayName());
-                return false;
-            }
+            //todo maybe extend to ethernet
+            if (!networkInterface.getDisplayName().contains("wlan")) return false;
+            //todo currently not working
+            //if(address.isLinkLocalAddress()) return false;
         }
 
         if (useAddresses.size() > 0 && !useAddresses.contains(address.getHostAddress())) {

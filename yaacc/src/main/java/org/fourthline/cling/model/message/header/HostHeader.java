@@ -24,7 +24,7 @@ import org.fourthline.cling.model.types.HostPort;
 public class HostHeader extends UpnpHeader<HostPort> {
 
     int port = Constants.UPNP_MULTICAST_PORT;
-    String group = Constants.IPV6_UPNP_LINK_LOCAL_ADDRESS;
+    String group = Constants.IPV6_UPNP_SITE_LOCAL_ADDRESS;
 
     public HostHeader() {
         setValue(new HostPort(group, port));
