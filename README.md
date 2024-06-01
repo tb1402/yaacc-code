@@ -24,6 +24,17 @@ The App allows you to play media from UPnP/DLNA devices in your network on your 
 any capable UPnP device in your network. It is also possible to start an UPnP server on your device
 in order to play media from your device on any UPnP renderer in your network.
 
+## Changes in this fork
+This fork supports playback from UPnP servers via IPv6.
+IPv6 only mode can be activated via the option in settings, but it's either IPv4 or IPv6 discovery/playback, not both.
+
+I have currently no plans to commit my changes to upstream,
+as these are only the bare minimum to get discovery and playback working via IPv6 and there are still 
+some errors showing up in logcat which don't seem to affect the discovery/playback but should still be fixed.
+
+I created this fork for personal use in my IPv6 only network, in combination with the UPnP server Cohen3,
+which I also made IPv6 capable and I don't have the time (for now) to implement proper IPv6 support in yaacc upstream.
+
 ## Features
 
 * UPnP/DLNA Server - share files of your device in the network
