@@ -140,6 +140,7 @@ public abstract class SendingNotification extends SendingAsync {
         if (device.isRoot()) {
             msgs.add(
                     new OutgoingNotificationRequestRootDevice(
+                            getUpnpService().getConfiguration().useIPv6(),
                             descriptorLocation,
                             device,
                             getNotificationSubtype()
@@ -149,11 +150,13 @@ public abstract class SendingNotification extends SendingAsync {
 
         msgs.add(
                 new OutgoingNotificationRequestUDN(
+                        getUpnpService().getConfiguration().useIPv6(),
                         descriptorLocation, device, getNotificationSubtype()
                 )
         );
         msgs.add(
                 new OutgoingNotificationRequestDeviceType(
+                        getUpnpService().getConfiguration().useIPv6(),
                         descriptorLocation, device, getNotificationSubtype()
                 )
         );
@@ -168,6 +171,7 @@ public abstract class SendingNotification extends SendingAsync {
         for (ServiceType serviceType : device.findServiceTypes()) {
             msgs.add(
                     new OutgoingNotificationRequestServiceType(
+                            getUpnpService().getConfiguration().useIPv6(),
                             descriptorLocation, device,
                             getNotificationSubtype(), serviceType
                     )

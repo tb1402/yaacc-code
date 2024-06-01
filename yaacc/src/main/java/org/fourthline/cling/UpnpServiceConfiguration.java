@@ -253,4 +253,10 @@ public interface UpnpServiceConfiguration {
      */
     public void shutdown();
 
+    /**
+     * Whether to use IPv6 only for UPnP service discovery
+     *
+     * @return true, if IPv6 only
+     */
+    public boolean useIPv6();
 }

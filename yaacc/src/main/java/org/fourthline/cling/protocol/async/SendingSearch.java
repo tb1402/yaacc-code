@@ -39,6 +39,8 @@ public class SendingSearch extends SendingAsync {
     private final UpnpHeader searchTarget;
     private final int mxSeconds;
 
+    private final boolean ipv6;
+
     /**
      * Defaults to {@link org.fourthline.cling.model.message.header.STAllHeader} and an MX of 3 seconds.
      */
@@ -66,6 +68,7 @@ public class SendingSearch extends SendingAsync {
         }
         this.searchTarget = searchTarget;
         this.mxSeconds = mxSeconds;
+        ipv6 = upnpService.getConfiguration().useIPv6();
     }
 
     public UpnpHeader getSearchTarget() {
@@ -80,7 +83,7 @@ public class SendingSearch extends SendingAsync {
 
         Log.i(getClass().getName(), "Executing search for target: " + searchTarget.getString() + " with MX seconds: " + getMxSeconds());
 
-        OutgoingSearchRequest msg = new OutgoingSearchRequest(searchTarget, getMxSeconds());
+        OutgoingSearchRequest msg = new OutgoingSearchRequest(ipv6, searchTarget, getMxSeconds());
         prepareOutgoingSearchRequest(msg);
 
         for (int i = 0; i < getBulkRepeat(); i++) {

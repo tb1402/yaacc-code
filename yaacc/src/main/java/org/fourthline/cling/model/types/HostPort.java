@@ -71,7 +71,8 @@ public class HostPort {
 
     @Override
     public String toString() {
-        if(host.contains(":")) return "["+host+"]:"+port;
+        //ost with : is probably an IPv6 address
+        if (host.contains(":")) return "[" + host + "]:" + port;
         return host + ":" + port;
     }
 }

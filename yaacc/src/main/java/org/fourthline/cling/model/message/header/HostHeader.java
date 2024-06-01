@@ -24,17 +24,20 @@ import org.fourthline.cling.model.types.HostPort;
 public class HostHeader extends UpnpHeader<HostPort> {
 
     int port = Constants.UPNP_MULTICAST_PORT;
-    String group = Constants.IPV6_UPNP_SITE_LOCAL_ADDRESS;
+    String group = Constants.IPV4_UPNP_MULTICAST_GROUP;
 
-    public HostHeader() {
+    public HostHeader(boolean ipv6) {
+        if (ipv6) group = Constants.IPV6_UPNP_SITE_LOCAL_ADDRESS;
         setValue(new HostPort(group, port));
     }
 
-    public HostHeader(int port) {
+    public HostHeader(boolean ipv6, int port) {
+        if (ipv6) group = Constants.IPV6_UPNP_SITE_LOCAL_ADDRESS;
         setValue(new HostPort(group, port));
     }
 
-    public HostHeader(String host, int port) {
+    public HostHeader(boolean ipv6, String host, int port) {
+        if (ipv6) group = Constants.IPV6_UPNP_SITE_LOCAL_ADDRESS;
         setValue(new HostPort(host, port));
     }
 
@@ -43,7 +46,7 @@ public class HostHeader extends UpnpHeader<HostPort> {
         if (s.contains(":")) {
             // We have a port in the header, so we have to use that instead of the UDA default
             try {
-                this.port = Integer.valueOf(s.substring(s.indexOf(":")+1));
+                this.port = Integer.valueOf(s.substring(s.indexOf(":") + 1));
                 this.group = s.substring(0, s.indexOf(":"));
                 setValue(new HostPort(group, port));
             } catch (NumberFormatException ex) {

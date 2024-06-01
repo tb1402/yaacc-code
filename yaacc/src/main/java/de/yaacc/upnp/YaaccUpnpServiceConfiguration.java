@@ -48,7 +48,7 @@ public class YaaccUpnpServiceConfiguration extends DefaultUpnpServiceConfigurati
 
     public YaaccUpnpServiceConfiguration(int streamListenPort, boolean ipv6) {
         super(streamListenPort, false);
-        this.ipv6=ipv6;
+        this.ipv6 = ipv6;
 
         // This should be the default on Android 2.1 but it's not set by default
         //FIXME really needed? System.setProperty("org.xml.sax.driver", "org.xmlpull.v1.sax2.Driver");
@@ -114,4 +114,8 @@ public class YaaccUpnpServiceConfiguration extends DefaultUpnpServiceConfigurati
         return 7000; // Preserve battery on Android, only run every 7 seconds
     }
 
+    @Override
+    public boolean useIPv6() {
+        return ipv6;
+    }
 }

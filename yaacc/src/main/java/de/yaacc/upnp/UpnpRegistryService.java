@@ -55,7 +55,7 @@ public class UpnpRegistryService extends Service {
 
         //if true, use ipv6 only
         boolean ipv6 = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean(
-                getString(R.string.settings_ipv6), false);
+                getString(R.string.settings_ipv6_key), false);
 
         upnpService = new UpnpServiceImpl(new YaaccUpnpServiceConfiguration(ipv6)) {
 

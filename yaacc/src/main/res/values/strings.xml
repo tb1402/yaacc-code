@@ -114,7 +114,8 @@
     <string name="settings_log_level">Log level</string>
     <string name="settings_local_server_provider_uuid_key">settings_local_server_provider_uuid_key</string>
     <string name="settings_local_server_receiver_uuid_key">settings_local_server_receiver_uuid_key</string>
-    <string name="settings_ipv6">settings_ipv6</string>
+    <string name="settings_ipv6_key" translatable="false">settings_ipv6</string>
+    <string name="settings_ipv6">IPv6 mode</string>
     <string name="media_store_scanner_scan_triggered">media store scan triggered</string>
     <string name="media_store_scanner_scan_finished">media store scan finished</string>
     <string name="media_store_scan">scan</string>

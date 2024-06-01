@@ -104,7 +104,7 @@ public class RouterImpl implements Router {
      */
     @Inject
     public RouterImpl(UpnpServiceConfiguration configuration, ProtocolFactory protocolFactory, boolean ipv6) {
-        Log.i(getClass().getName(), "Creating Router: " + getClass().getName());
+        Log.i(getClass().getName(), "Creating Router: " + getClass().getName() + (ipv6 ? " in IPv6 mode" : ""));
         this.configuration = configuration;
         this.protocolFactory = protocolFactory;
         this.ipv6 = ipv6;
@@ -434,10 +434,12 @@ public class RouterImpl implements Router {
         while (addresses.hasNext()) {
             InetAddress address = addresses.next();
 
-            if (address instanceof Inet4Address) {
-                continue;
-            }
-            if (!address.isLinkLocalAddress()) continue;
+            if (ipv6) {
+                if (address instanceof Inet4Address) continue;
+
+                //for some reason android only send multicast packets out if they come from a link-local address
+                if (!address.isLinkLocalAddress()) continue;
+            } else if (!(address instanceof Inet4Address)) continue;
 
             // HTTP servers
             StreamServer streamServer = getConfiguration().createStreamServer(protocolFactory, networkAddressFactory);

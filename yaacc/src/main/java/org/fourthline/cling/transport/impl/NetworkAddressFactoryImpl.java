@@ -23,7 +23,6 @@ import org.fourthline.cling.transport.spi.NetworkAddressFactory;
 import org.fourthline.cling.transport.spi.NoNetworkException;
 import org.seamless.util.Iterators;
 
-import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
@@ -477,6 +476,7 @@ public class NetworkAddressFactoryImpl implements NetworkAddressFactory {
             //todo maybe extend to ethernet
             if (!networkInterface.getDisplayName().contains("wlan")) return false;
             //todo currently not working
+            //somehow android has something against multicast from a non link-local address
             //if(address.isLinkLocalAddress()) return false;
         }
 

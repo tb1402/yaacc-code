@@ -36,10 +36,10 @@ public abstract class OutgoingNotificationRequest extends OutgoingDatagramMessag
 
     private NotificationSubtype type;
 
-    protected OutgoingNotificationRequest(Location location, LocalDevice device, NotificationSubtype type) {
+    protected OutgoingNotificationRequest(boolean ipv6, Location location, LocalDevice device, NotificationSubtype type) {
         super(
                 new UpnpRequest(UpnpRequest.Method.NOTIFY),
-                ModelUtil.getInetAddressByName(Constants.IPV6_UPNP_LINK_LOCAL_ADDRESS),
+                ModelUtil.getInetAddressByName(ipv6 ? Constants.IPV6_UPNP_LINK_LOCAL_ADDRESS : Constants.IPV4_UPNP_MULTICAST_GROUP),
                 Constants.UPNP_MULTICAST_PORT
         );
 
@@ -49,7 +49,7 @@ public abstract class OutgoingNotificationRequest extends OutgoingDatagramMessag
         getHeaders().add(UpnpHeader.Type.LOCATION, new LocationHeader(location.getURL()));
 
         getHeaders().add(UpnpHeader.Type.SERVER, new ServerHeader());
-        getHeaders().add(UpnpHeader.Type.HOST, new HostHeader());
+        getHeaders().add(UpnpHeader.Type.HOST, new HostHeader(ipv6));
         getHeaders().add(UpnpHeader.Type.NTS, new NTSHeader(type));
     }
 

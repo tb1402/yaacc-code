@@ -369,4 +369,8 @@ public class DefaultUpnpServiceConfiguration implements UpnpServiceConfiguration
         }
     }
 
+    @Override
+    public boolean useIPv6() {
+        return false;
+    }
 }

@@ -32,10 +32,10 @@ public class OutgoingSearchRequest extends OutgoingDatagramMessage<UpnpRequest> 
 
     private UpnpHeader searchTarget;
 
-    public OutgoingSearchRequest(UpnpHeader searchTarget, int mxSeconds) {
+    public OutgoingSearchRequest(boolean ipv6, UpnpHeader searchTarget, int mxSeconds) {
         super(
                 new UpnpRequest(UpnpRequest.Method.MSEARCH),
-                ModelUtil.getInetAddressByName(Constants.IPV6_UPNP_SITE_LOCAL_ADDRESS),
+                ModelUtil.getInetAddressByName(ipv6 ? Constants.IPV6_UPNP_SITE_LOCAL_ADDRESS : Constants.IPV4_UPNP_MULTICAST_GROUP),
                 Constants.UPNP_MULTICAST_PORT
         );
 
@@ -44,7 +44,7 @@ public class OutgoingSearchRequest extends OutgoingDatagramMessage<UpnpRequest> 
         getHeaders().add(UpnpHeader.Type.MAN, new MANHeader(NotificationSubtype.DISCOVER.getHeaderString()));
         getHeaders().add(UpnpHeader.Type.MX, new MXHeader(mxSeconds));
         getHeaders().add(UpnpHeader.Type.ST, searchTarget);
-        getHeaders().add(UpnpHeader.Type.HOST, new HostHeader());
+        getHeaders().add(UpnpHeader.Type.HOST, new HostHeader(ipv6));
     }
 
     public UpnpHeader getSearchTarget() {

@@ -29,8 +29,8 @@ import org.fourthline.cling.model.types.NotificationSubtype;
  */
 public class OutgoingNotificationRequestRootDevice extends OutgoingNotificationRequest {
 
-    public OutgoingNotificationRequestRootDevice(Location location, LocalDevice device, NotificationSubtype type) {
-        super(location, device, type);
+    public OutgoingNotificationRequestRootDevice(boolean ipv6, Location location, LocalDevice device, NotificationSubtype type) {
+        super(ipv6, location, device, type);
 
         getHeaders().add(UpnpHeader.Type.NT, new RootDeviceHeader());
         getHeaders().add(UpnpHeader.Type.USN, new USNRootDeviceHeader(device.getIdentity().getUdn()));

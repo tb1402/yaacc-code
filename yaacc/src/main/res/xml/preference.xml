@@ -183,8 +183,8 @@
             android:summary="@string/settings_device_playback_offset_summ"
             android:title="@string/settings_device_playback_offset" />
         <CheckBoxPreference
-            android:key="@string/settings_ipv6"
-            android:title="ipv6 only"
+            android:key="@string/settings_ipv6_key"
+            android:title="@string/settings_ipv6"
             android:defaultValue="false"/>
     </PreferenceCategory>    
 </PreferenceScreen>
